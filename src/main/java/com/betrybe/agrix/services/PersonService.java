@@ -2,6 +2,7 @@ package com.betrybe.agrix.services;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.betrybe.agrix.exceptions.PersonNotFoundException;
 import com.betrybe.agrix.models.entities.Person;
@@ -35,22 +36,13 @@ public class PersonService {
   }
 
   /**
-   * Returns a person for a given username.
-   */
-  public Person getPersonByUsername(String username) {
-    Optional<Person> person = personRepository.findByUsername(username);
-
-    if (person.isEmpty()) {
-      throw new PersonNotFoundException();
-    }
-
-    return person.get();
-  }
-
-  /**
    * Creates a new person.
    */
   public Person create(Person person) {
+
+    String hashedPassword = new BCryptPasswordEncoder().encode(person.getPassword());
+    person.setPassword(hashedPassword);
+
     return personRepository.save(person);
   }
 }
