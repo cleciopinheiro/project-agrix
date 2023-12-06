@@ -31,7 +31,7 @@ public class TokenService {
   }
 
   /**
-   * validateToken
+   * validateToken.
    */
   public String validateToken(String token) {
     Algorithm algorithm = Algorithm.HMAC256(secret);

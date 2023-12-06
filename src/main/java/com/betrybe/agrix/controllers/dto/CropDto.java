@@ -9,10 +9,16 @@ import java.time.LocalDate;
 public record CropDto(Long id, String name, Double plantedArea, Long farmId,
     LocalDate plantedDate, LocalDate harvestDate) {
 
+  /**
+   * toEntity.
+   */
   public Crop toEntity() {
     return new Crop(id, name, plantedArea, null, plantedDate, harvestDate, null);
   }
-
+  
+  /**
+   * toDto.
+   */
   public static CropDto toDto(Crop crop) {
     return new CropDto(
         crop.getId(),
