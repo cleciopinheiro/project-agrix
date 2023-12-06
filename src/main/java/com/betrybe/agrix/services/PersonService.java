@@ -2,6 +2,9 @@ package com.betrybe.agrix.services;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.betrybe.agrix.exceptions.PersonNotFoundException;
@@ -12,7 +15,7 @@ import com.betrybe.agrix.models.repositories.PersonRepository;
  * Service layer class for handling persons business logic.
  */
 @Service
-public class PersonService {
+public class PersonService implements UserDetailsService {
 
   private final PersonRepository personRepository;
 
@@ -44,5 +47,10 @@ public class PersonService {
     person.setPassword(hashedPassword);
 
     return personRepository.save(person);
+  }
+
+  @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+      return personRepository.findByUsername(username);
   }
 }
